@@ -1,6 +1,5 @@
 import React from 'react';
 import LeadList from './components/LeadList';
-import LeadForm from './components/LeadForm';
 
 function App() {
     return (
