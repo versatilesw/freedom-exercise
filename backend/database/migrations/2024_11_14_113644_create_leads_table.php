@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone')->nullable();
-            $table->string('status')->default('new');
+            $table->string('phone'); // Required field
+            $table->foreignId('lead_status_id') // Foreign key
+                  ->constrained('lead_statuses')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

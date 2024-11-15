@@ -15,19 +15,32 @@ class LeadController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:leads',
+            'phone' => 'required|string|max:20',
+            'lead_status_id' => 'required|exists:lead_statuses,id',
         ]);
-
-        return Lead::create($request->all());
+    
+        Lead::create($request->all());
+    
+        return response()->json(['message' => 'Lead created successfully!'], 201);
     }
-
+    
     public function update(Request $request, $id)
     {
         $lead = Lead::findOrFail($id);
+    
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:leads,email,' . $lead->id,
+            'phone' => 'required|string|max:20',
+            'lead_status_id' => 'required|exists:lead_statuses,id',
+        ]);
+    
         $lead->update($request->all());
-        return $lead;
-    }
+    
+        return response()->json(['message' => 'Lead updated successfully!']);
+    }    
 
     public function destroy($id)
     {
